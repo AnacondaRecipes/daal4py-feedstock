@@ -39,9 +39,8 @@ test:
     - pandas
     - scipy
     - scikit-learn
-    # tests require xgboost > 1.0.0 which is not yet in defaults.
-    # - xgboost      # [not win and py<=37]
-    # - lightgbm        # [linux]
+    - xgboost
+    - lightgbm        # [linux]
     - pytest
     - mpich           # [not win]
   source_files:
