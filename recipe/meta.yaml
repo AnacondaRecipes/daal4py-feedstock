@@ -1,4 +1,4 @@
-{% set version = "2021.3.0" %}
+{% set version = "2021.4.0" %}
 {% set buildnumber = 0 %}
 
 package:
@@ -7,54 +7,63 @@ package:
 
 source:
   url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
-  sha256: 25fb5cf8e43bfb7dc579a0a8d7f06cba88b1a378a76c49e05463725c12b4096c
+  sha256: 312fe4db3c03e8c17cd159d18afbdce8abf71c51247fc1cef756ac994b8b24e7
 build:
   number: {{ buildnumber }}
-  skip: True                  # [not (win64 or linux64 or osx)]
-  missing_dso_whitelist:                                              # [osx]
-    - lib/libc++.1.dylib   # [osx]
+  skip: True                  # [not ((win or linux or osx) and x86_64)]
+  missing_dso_whitelist:      # [osx]
+    - lib/libc++.1.dylib      # [osx]
 
 requirements:
   build:
-    - {{ compiler('cxx') }}  # [not osx]
+    - {{ compiler('c') }}     # [not osx]
+    - {{ compiler('cxx') }}   # [not osx]
+    - cmake
+    - make   # [unix]
+    - ninja  # [win]
   host:
     - python
     - setuptools
+    - wheel
+    - pip
     - numpy
     - dal-devel {{ version }}
     - cython
     - jinja2
-    - mpich      # [not win]
+    - mpich                   # [not win]
     - clang-tools
+    - pybind11
   run:
     - python
-    - {{ pin_compatible('dal', max_pin='x.x.x') }}
+    - dal {{ version }}
     - {{ pin_compatible('numpy') }}
-  run_constrained:                                            # [osx]
+  run_constrained:                                             # [osx]
     - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.12") }}  # [osx]
 
 test:
   requires:
-    - pandas
+    - pandas ==1.2.5
     - scipy
     - scikit-learn
     - xgboost
     - lightgbm        # [linux]
     - pytest
     - mpich           # [not win]
+    - zlib
   source_files:
     - examples
     - tests
     - daal4py
     - onedal
   commands:
+    - cd tests
     - python -c "import daal4py"
-    - mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py      # [not win]
-    - python -m unittest discover -v -s tests -p test*.py
-    - pytest --pyargs daal4py/sklearn/
-    - pytest --pyargs onedal/
-    - python examples/run_examples.py
-    - python -m daal4py examples/sycl/sklearn_sycl.py
+    - mpirun -n 4 python -m unittest discover -v -p spmd*.py      # [not win]
+    - python -m unittest discover -v -p 'test*.py'
+    - pytest --pyargs ../daal4py/sklearn/
+    - pytest --pyargs ../onedal/
+    - python ../examples/daal4py/run_examples.py
+    - python -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
 
 about:
   home: https://intelpython.github.io/daal4py/
@@ -79,6 +88,5 @@ extra:
   recipe-maintainers:
         # GitHub IDs for maintainers of the recipe.
     - napetrov
-    - PetrovKP
-    - SmirnovEgorRu
+    - vmeshche
     - Pahandrovich
