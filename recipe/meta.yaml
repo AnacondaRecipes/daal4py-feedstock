@@ -10,6 +10,9 @@ package:
 source:
   url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
   sha256: bbe3d889f722c154e22d141f3b194d7ceaefdddc710f8139cf0cbb9f0476bf18
+  patches:
+    - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
+
 build:
   number: {{ buildnumber }}
   skip: True                  # [not ((win or linux or osx) and x86_64)]
@@ -23,6 +26,8 @@ requirements:
     - cmake
     - make   # [unix]
     - ninja  # [win]
+    - patch     # [unix]
+    - m2-patch  # [win]
   host:
     - python
     - setuptools
