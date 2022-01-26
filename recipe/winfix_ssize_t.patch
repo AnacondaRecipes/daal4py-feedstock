@@ -8,7 +8,7 @@ Index: scikit-learn-intelex-2021.4.0/generator/wrapper_gen.py
          """
 -        cpp = "#ifndef DAAL4PY_CPP_INC_\n" + \
 +        cpp = "#if defined(_MSC_VER) && !defined(_SSIZE_DEFINED)\n#define _SSIZE_DEFINED 1\n" + \
-+            "#include <BaseTsd.h>\ntypedef SSIZE_T ssize_t;\n#endif\n#endif\n" + \
++            "#include <BaseTsd.h>\n#undef ssize_t\n#define ssize_t SSIZE_T\n#endif\n#endif\n" + \
 +            "#ifndef DAAL4PY_CPP_INC_\n" + \
              "#define DAAL4PY_CPP_INC_\n#include <daal4py_dist.h>\n\n"
          pyx = ''
@@ -26,7 +26,7 @@ Index: scikit-learn-intelex-2021.4.0/generator/gen_daal4py.py
          wg = wrapper_gen(algoconfig, {cpp2hl(i): ifaces[i] for i in ifaces})
          cpp_map, cpp_begin, cpp_end, pyx_map, pyx_begin, pyx_end = \
 -            '', '', '#define NO_IMPORT_ARRAY\n#include "daal4py_cpp.h"\n', '', '', ''
-+            '', '', '#if defined(_MSC_VER) && !defined(_SSIZE_DEFINED)\n#define _SSIZE_DEFINED 1\n#include <BaseTsd.h>\ntypedef SSIZE_T ssize_t;\n#endif\n#endif\n\n#define NO_IMPORT_ARRAY\n#include "daal4py_cpp.h"\n', '', '', ''
++            '', '', '#if defined(_MSC_VER) && !defined(_SSIZE_DEFINED)\n#define _SSIZE_DEFINED 1\n#include <BaseTsd.h>\n#undef ssize_t\n#define ssize_t SSIZE_T\n#endif\n#endif\n\n#define NO_IMPORT_ARRAY\n#include "daal4py_cpp.h"\n', '', '', ''
  
          for ns in algos:
              if ns.startswith('algorithms::') and \
@@ -34,14 +34,15 @@ Index: scikit-learn-intelex-2021.4.0/src/daal4py.h
 ===================================================================
 --- scikit-learn-intelex-2021.4.0.orig/src/daal4py.h
 +++ scikit-learn-intelex-2021.4.0/src/daal4py.h
-@@ -14,6 +14,13 @@
+@@ -14,6 +14,14 @@
  * limitations under the License.
  *******************************************************************************/
  
 +#if defined(_MSC_VER) && !defined(_SSIZE_DEFINED)
 +#define _SSIZE_DEFINED 1
 +#include <BaseTsd.h>
-+typedef SSIZE_T ssize_t;
++#undef ssize_t
++#define ssize_t SSIZE_T
 +#endif
 +#endif
 +
