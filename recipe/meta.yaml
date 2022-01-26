@@ -8,6 +8,8 @@ package:
 source:
   url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
   sha256: 312fe4db3c03e8c17cd159d18afbdce8abf71c51247fc1cef756ac994b8b24e7
+  patches:  # [win]
+    - winfix_ssize_t.patch  # [win]
 build:
   number: {{ buildnumber }}
   skip: True                  # [not ((win or linux or osx) and x86_64)]
@@ -21,6 +23,7 @@ requirements:
     - cmake
     - make   # [unix]
     - ninja  # [win]
+    - m2-patch  # [win]
   host:
     - python
     - setuptools
