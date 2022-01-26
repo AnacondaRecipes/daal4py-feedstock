@@ -30,3 +30,21 @@ Index: scikit-learn-intelex-2021.4.0/generator/gen_daal4py.py
  
          for ns in algos:
              if ns.startswith('algorithms::') and \
+Index: scikit-learn-intelex-2021.4.0/src/daal4py.h
+===================================================================
+--- scikit-learn-intelex-2021.4.0.orig/src/daal4py.h
++++ scikit-learn-intelex-2021.4.0/src/daal4py.h
+@@ -14,6 +14,13 @@
+ * limitations under the License.
+ *******************************************************************************/
+ 
++#if defined(_MSC_VER) && !defined(_SSIZE_DEFINED)
++#define _SSIZE_DEFINED 1
++#include <BaseTsd.h>
++typedef SSIZE_T ssize_t;
++#endif
++#endif
++
+ #ifndef _HLAPI_H_INCLUDED_
+ #define _HLAPI_H_INCLUDED_
+ 
