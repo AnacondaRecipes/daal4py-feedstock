@@ -1,0 +1,49 @@
+Index: scikit-learn-intelex-2021.4.0/generator/wrapper_gen.py
+===================================================================
+--- scikit-learn-intelex-2021.4.0.orig/generator/wrapper_gen.py
++++ scikit-learn-intelex-2021.4.0/generator/wrapper_gen.py
+@@ -1356,7 +1356,9 @@ class wrapper_gen(object):
+         """
+         return code for initing
+         """
+-        cpp = "#ifndef DAAL4PY_CPP_INC_\n" + \
++        cpp = "#if defined(_MSC_VER) && !defined(ssize_t)\n" + \
++            "#include <BaseTsd.h>\n#undef ssize_t\n#define ssize_t SSIZE_T\n#endif\n" + \
++            "#ifndef DAAL4PY_CPP_INC_\n" + \
+             "#define DAAL4PY_CPP_INC_\n#include <daal4py_dist.h>\n\n"
+         pyx = ''
+         for i in self.ifaces:
+Index: scikit-learn-intelex-2021.4.0/generator/gen_daal4py.py
+===================================================================
+--- scikit-learn-intelex-2021.4.0.orig/generator/gen_daal4py.py
++++ scikit-learn-intelex-2021.4.0/generator/gen_daal4py.py
+@@ -972,11 +972,10 @@ class cython_interface(object):
+                                                          no_stream))
+ 
+         self.prepare_model_hierachy(algoconfig)
+-
+         # and now we can finally generate the code
+         wg = wrapper_gen(algoconfig, {cpp2hl(i): ifaces[i] for i in ifaces})
+         cpp_map, cpp_begin, cpp_end, pyx_map, pyx_begin, pyx_end = \
+-            '', '', '#define NO_IMPORT_ARRAY\n#include "daal4py_cpp.h"\n', '', '', ''
++            '', '', '#if defined(_MSC_VER) && !defined(ssize_t)\n#include <BaseTsd.h>\n#undef ssize_t\n#define ssize_t SSIZE_T\n\n#endif\n\n#define NO_IMPORT_ARRAY\n#include "daal4py_cpp.h"\n', '', '', ''
+ 
+         for ns in algos:
+             if ns.startswith('algorithms::') and \
+Index: scikit-learn-intelex-2021.4.0/src/daal4py.h
+===================================================================
+--- scikit-learn-intelex-2021.4.0.orig/src/daal4py.h
++++ scikit-learn-intelex-2021.4.0/src/daal4py.h
+@@ -14,6 +14,12 @@
+ * limitations under the License.
+ *******************************************************************************/
+ 
++#if defined(_MSC_VER) && !defined(ssize_t)
++#include <BaseTsd.h>
++#undef ssize_t
++#define ssize_t SSIZE_T
++#endif
++
+ #ifndef _HLAPI_H_INCLUDED_
+ #define _HLAPI_H_INCLUDED_
+ 
