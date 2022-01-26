@@ -11,3 +11,16 @@ Index: scikit-learn-intelex-2021.4.0/generator/wrapper_gen.py
              "#define DAAL4PY_CPP_INC_\n#include <daal4py_dist.h>\n\n"
          pyx = ''
          for i in self.ifaces:
+Index: scikit-learn-intelex-2021.4.0/generator/gen_daal4py.py
+===================================================================
+--- scikit-learn-intelex-2021.4.0.orig/generator/gen_daal4py.py
++++ scikit-learn-intelex-2021.4.0/generator/gen_daal4py.py
+@@ -976,7 +976,7 @@ class cython_interface(object):
+         # and now we can finally generate the code
+         wg = wrapper_gen(algoconfig, {cpp2hl(i): ifaces[i] for i in ifaces})
+         cpp_map, cpp_begin, cpp_end, pyx_map, pyx_begin, pyx_end = \
+-            '', '', '#define NO_IMPORT_ARRAY\n#include "daal4py_cpp.h"\n', '', '', ''
++            '', '', '#include <stdlib.h>\n#define NO_IMPORT_ARRAY\n#include "daal4py_cpp.h"\n', '', '', ''
+ 
+         for ns in algos:
+             if ns.startswith('algorithms::') and \
