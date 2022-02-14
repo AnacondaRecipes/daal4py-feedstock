@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
-  sha256: bbe3d889f722c154e22d141f3b194d7ceaefdddc710f8139cf0cbb9f0476bf18
+  sha256: b0298ed384554077e8c49feb8092e895eb0f93dc98bc059cab8aede8a259acd8
   patches:
     - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
     - winfix_ssize_t.patch  # [win]
@@ -17,6 +17,7 @@ source:
 build:
   number: {{ buildnumber }}
   skip: True                  # [not ((win or linux or osx) and x86_64)]
+  skip: True                  # [py==310]
   missing_dso_whitelist:      # [osx]
     - lib/libc++.1.dylib      # [osx]
 
@@ -50,7 +51,7 @@ requirements:
 
 test:
   requires:
-    - pandas ==1.2.5
+    - pandas
     - scipy
     - scikit-learn
     - xgboost
