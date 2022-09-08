@@ -1,102 +1,97 @@
-{% set version = "2021.5.0" %}
+{% set version = '2021.6' %}
 {% set buildnumber = 0 %}
-{% set dal_version = "2021.5.1" %}    # [linux]
-{% set dal_version = "2021.5.0" %}    # [osx or win]
 
 package:
-  name: daal4py
-  version: {{ version }}
+    name: daal4py
+    version: {{ version }}
 
 source:
-  url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
-  sha256: b0298ed384554077e8c49feb8092e895eb0f93dc98bc059cab8aede8a259acd8
-  patches:
-    - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
-    - winfix_ssize_t.patch  # [win]
+    path: ..
 
 build:
-  number: {{ buildnumber }}
-  # win-32 is not available
-  skip: True                  # [not ((win or linux or osx) and x86_64)]
-  skip: True                  # [py==310]
-  missing_dso_whitelist:      # [osx]
-    - lib/libc++.1.dylib      # [osx]
+    number: {{ buildnumber }}
+    include_recipe: False
+    script_env:
+    - DPCPPROOT
+    - DAALROOT
+    - DALROOT
+    ignore_run_exports:
+       - python
+       - mpich
 
 requirements:
-  build:
-    - {{ compiler('c') }}     # [not osx]
-    - {{ compiler('cxx') }}   # [not osx]
-    - cmake
-    - make   # [unix]
-    - ninja  # [win]
-    - patch     # [unix]
-    - m2-patch  # [win]
-  host:
-    - python
-    - setuptools
-    - wheel
-    - pip
-    - numpy
-    - dal-devel {{ dal_version }}
-    - cython
-    - jinja2
-    - mpich                   # [not win]
-    - clang-tools
-    - pybind11
-  run:
-    - python
-    - dal {{ dal_version }}
-    - {{ pin_compatible('numpy') }}
-  run_constrained:                                             # [osx]
-    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.12") }}  # [osx]
+    build:
+        - {{ compiler('cxx') }}  # [not osx]
+        - {{ compiler('c') }}  # [not osx]
+    host:
+        - python
+        - setuptools
+        - numpy {{ numpy }}
+        - dal-devel ==2021.5.1  # [linux]
+        - dal-devel ==2021.5.0  # [win or osx]
+        - cython
+        - jinja2
+        - mpich  # [osx]
+        - impi-devel  # [not osx]
+        - clang-tools
+        - pybind11
+        - make
+    run:
+        - python
+        - dal ==2021.5.1  # [linux]
+        - dal ==2021.5.0  # [win or osx]
+    ignore_run_exports:
+        - numpy
 
 test:
-  requires:
-    - pandas
-    - scipy
-    - scikit-learn
-    - xgboost
-    - lightgbm        # [linux]
-    - pytest
-    - mpich           # [not win]
-    - zlib
-  source_files:
-    - examples
-    - tests
-    - daal4py
-    - onedal
-  commands:
-    - cd tests
-    - python -c "import daal4py"
-    - mpirun -n 4 python -m unittest discover -v -p spmd*.py      # [not win]
-    - python -m unittest discover -v -p 'test*.py'
-    - pytest --pyargs ../daal4py/sklearn/
-    - pytest --pyargs ../onedal/
-    - python ../examples/daal4py/run_examples.py
-    - python -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
+    requires:
+        - lightgbm  # [not win]
+        - pandas
+        - scipy
+        - scikit-learn
+        - threadpoolctl
+        - xgboost  # [not win]
+        - catboost
+        - pytest
+        - mpich  # [osx]
+        - impi_rt  # [not osx]
+    source_files:
+        - examples
+        - tests
+        - daal4py/sklearn
+    commands:
+        - python -c "import daal4py"
+        - mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py # [not win]
+        - mpiexec -localonly -n 4 python -m unittest discover -v -s tests -p spmd*.py # [win]
+        - python -m unittest discover -v -s tests -p test*.py
+        - pytest --pyargs daal4py/sklearn/
+        - python examples/daal4py/run_examples.py
+        - python -m daal4py examples/daal4py/sycl/sklearn_sycl.py
 
 about:
-  home: https://intelpython.github.io/daal4py/
-  license: Apache-2.0
-  license_file:
-    - LICENSE
-    - doc/daal4py/third-party-programs.txt
-  summary: A convenient Python API to Intel (R) oneAPI Data Analytics Library
-  description: |
-    <strong>LEGAL NOTICE: Use of this software package is subject to the
-    software license agreement (as set forth above, in the license section of
-    the installed Conda package and/or the README file) and all notices,
-    disclaimers or license terms for third party or open source software
-    included in or with the software.</strong>
-    <br/><br/>
-    EULA: <a href="https://opensource.org/licenses/Apache-2.0" target="_blank">Apache-2.0</a>
-    <br/><br/>
-  dev_url: https://github.com/intel/scikit-learn-intelex
-  doc_url: https://intelpython.github.io/daal4py
+    about:
+        home: https://intelpython.github.io/daal4py/
+        license: Apache-2.0
+        license_file:
+              - LICENSE
+              - doc/third-party-programs.txt
+        summary: A convenient Python API to Intel (R) oneAPI Data Analytics Library
+        description: |
+          <strong>LEGAL NOTICE: Use of this software package is subject to the
+          software license agreement (as set forth above, in the license section of
+          the installed Conda package and/or the README file) and all notices,
+          disclaimers or license terms for third party or open source software
+          included in or with the software.</strong>
+          <br/><br/>
+          EULA: <a href="https://opensource.org/licenses/Apache-2.0" target="_blank">Apache-2.0</a>
+          <br/><br/>
+        dev_url: https://github.com/IntelPython/daal4py
+        doc_url: https://intelpython.github.io/daal4py
 
 extra:
-  recipe-maintainers:
+    recipe-maintainers:
         # GitHub IDs for maintainers of the recipe.
-    - napetrov
-    - vmeshche
-    - Pahandrovich
+        - napetrov
+        - Pahandrovich
+        - agorshk
+        - vmeshche
