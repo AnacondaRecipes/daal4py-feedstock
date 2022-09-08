@@ -37,7 +37,6 @@ requirements:
         - mpich  # [osx]
         - clang-tools
         - pybind11
-
     run:
         - python
         - dal ==2021.5.1  # [linux]
@@ -57,7 +56,6 @@ test:
         - catboost
         - pytest
         - mpich  # [osx]
-        - impi_rt  # [not osx]
     source_files:
         - examples
         - tests
