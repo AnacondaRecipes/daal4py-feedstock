@@ -1,7 +1,6 @@
 {% set version = "2021.6.0" %}
 {% set buildnumber = 0 %}
-{% set dal_version = "2021.6.0" %}    # [linux]
-{% set dal_version = "2021.6.0" %}    # [osx or win]
+{% set dal_version = "2021.6.0" %}
 
 package:
   name: daal4py
@@ -53,12 +52,14 @@ test:
   requires:
     - pandas
     - scipy
-    - scikit-learn
+    - scikit-learn    # [py<310 or not win]
     - xgboost
     - lightgbm        # [linux]
     - pytest
     - mpich           # [not win]
     - zlib
+    - mkl >={{ version }}
+
   source_files:
     - examples
     - tests
@@ -69,10 +70,10 @@ test:
     - python -c "import daal4py"
     - mpirun -n 4 python -m unittest discover -v -p spmd*.py      # [not win]
     - python -m unittest discover -v -p 'test*.py'
-    - pytest --pyargs ../daal4py/sklearn/
+    - pytest --pyargs ../daal4py/sklearn/  # [py<310 or not win]
     - pytest --pyargs ../onedal/
     - python ../examples/daal4py/run_examples.py
-    - python -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
+    - python -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py  # [py<310 or not win]
 
 about:
   home: https://intelpython.github.io/daal4py/
