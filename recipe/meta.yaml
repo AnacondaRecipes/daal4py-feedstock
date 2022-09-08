@@ -1,4 +1,4 @@
-{% set version = "2021.5.0" %}
+{% set version = "2021.6.0" %}
 {% set buildnumber = 0 %}
 {% set dal_version = "2021.6.0" %}    # [linux]
 {% set dal_version = "2021.6.0" %}    # [osx or win]
