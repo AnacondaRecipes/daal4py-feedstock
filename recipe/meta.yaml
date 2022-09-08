@@ -1,4 +1,4 @@
-{% set version = '2021.6' %}
+{% set version = '2021.6.0' %}
 {% set buildnumber = 0 %}
 
 package:
@@ -6,15 +6,19 @@ package:
     version: {{ version }}
 
 source:
-    path: ..
+    url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
+    sha256: a75acdc518f0af262a86952ee1040d5c8b9a9dbd4bf798fd974a917ee5b47e68
 
 build:
     number: {{ buildnumber }}
-    include_recipe: False
+    skip: True                  # [not ((win or linux or osx) and x86_64)]
+    skip: True                  # [py<37]
+    missing_dso_whitelist:      # [osx]
+        - lib/libc++.1.dylib    # [osx]
     script_env:
-    - DPCPPROOT
-    - DAALROOT
-    - DALROOT
+       - DPCPPROOT
+       - DAALROOT
+       - DALROOT
     ignore_run_exports:
        - python
        - mpich
