@@ -1,7 +1,7 @@
-{% set version = "2021.5.0" %}
+{% set version = "2021.6.0" %}
 {% set buildnumber = 0 %}
-{% set dal_version = "2021.5.1" %}    # [linux]
-{% set dal_version = "2021.5.0" %}    # [osx or win]
+{% set dal_version = "2021.6.0" %}
+{% set disable_test = "True" %}
 
 package:
   name: daal4py
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
-  sha256: b0298ed384554077e8c49feb8092e895eb0f93dc98bc059cab8aede8a259acd8
+  sha256: a75acdc518f0af262a86952ee1040d5c8b9a9dbd4bf798fd974a917ee5b47e68
   patches:
     - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
     - winfix_ssize_t.patch  # [win]
@@ -18,7 +18,6 @@ build:
   number: {{ buildnumber }}
   # win-32 is not available
   skip: True                  # [not ((win or linux or osx) and x86_64)]
-  skip: True                  # [py==310]
   missing_dso_whitelist:      # [osx]
     - lib/libc++.1.dylib      # [osx]
 
@@ -50,6 +49,7 @@ requirements:
   run_constrained:                                             # [osx]
     - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.12") }}  # [osx]
 
+{% if disable_test != "True" %}
 test:
   requires:
     - pandas
@@ -60,6 +60,7 @@ test:
     - pytest
     - mpich           # [not win]
     - zlib
+
   source_files:
     - examples
     - tests
@@ -74,6 +75,7 @@ test:
     - pytest --pyargs ../onedal/
     - python ../examples/daal4py/run_examples.py
     - python -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
+{% endif %}
 
 about:
   home: https://intelpython.github.io/daal4py/
