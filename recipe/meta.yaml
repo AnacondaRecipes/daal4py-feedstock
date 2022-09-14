@@ -12,6 +12,7 @@ source:
     - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
 build:
   number: {{ buildnumber }}
+  skip: True  # [not ((win or linux or osx) and x86_64)]
 
 requirements:
   build:
