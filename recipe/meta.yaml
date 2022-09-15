@@ -13,6 +13,8 @@ source:
 build:
   number: {{ buildnumber }}
   skip: True  # [not ((win or linux or osx) and x86_64)]
+  missing_dso_whitelist:      # [osx]
+    - lib/libc++.1.dylib      # [osx]
 
 requirements:
   build:
