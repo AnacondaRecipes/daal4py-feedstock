@@ -12,7 +12,7 @@ source:
     - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
 build:
   number: {{ buildnumber }}
-  skip: True  # [not ((win or linux or osx) and x86_64)]
+  skip: True  # [not ((win or linux or osx) or not x86_64)]
   missing_dso_whitelist:      # [osx]
     - lib/libc++.1.dylib      # [osx]
 
