@@ -26,7 +26,7 @@ requirements:
     - python
     - setuptools
     - numpy
-    - dal-devel ==2021.6.0
+    - dal-devel ==2021.6.0=h59b6b97_874
     - cython
     - jinja2
     - mpich      # [not win]
@@ -35,7 +35,7 @@ requirements:
     - pybind11
   run:
     - python
-    - dal ==2021.6.0
+    - dal ==2021.6.0=h59b6b97_874
     - {{ pin_compatible('numpy') }}
 
 test:
