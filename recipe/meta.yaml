@@ -26,7 +26,8 @@ requirements:
     - python
     - setuptools
     - numpy
-    - dal-devel ==2021.6.0=h59b6b97_875  # [not win]
+    - dal-devel ==2021.6.0=hdb19cb5_916  # [linux]
+    - dal-devel ==2021.6.0=haf03e11_929  # [osx]
     - dal-devel ==2021.6.0=h59b6b97_874  # [win]
     - cython
     - jinja2
@@ -36,7 +37,8 @@ requirements:
     - pybind11
   run:
     - python
-    - dal ==2021.6.0=h59b6b97_875  # [not win]
+    - dal ==2021.6.0=hdb19cb5_916  # [linux]
+    - dal ==2021.6.0=haf03e11_929  # [osx]
     - dal ==2021.6.0=h59b6b97_874  # [win]
     - {{ pin_compatible('numpy') }}
 
