@@ -1,0 +1,26 @@
+From 997eea7c34ed3dd87a8dd8390a003eda757bebb4 Mon Sep 17 00:00:00 2001
+From: Paul Yim <paul.j.yim@gmail.com>
+Date: Thu, 22 Sep 2022 11:11:26 -0400
+Subject: [PATCH] Hardcode extension suffix; distutils is broken for win-64
+ py37
+
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 864ab5d..3f731e3 100755
+--- a/setup.py
++++ b/setup.py
+@@ -323,7 +323,7 @@ def build_oneapi_backend():
+ 
+ 
+ def get_onedal_py_libs():
+-    ext_suffix = get_config_vars('EXT_SUFFIX')[0]
++    ext_suffix = '.pyd'
+     libs = [f'_onedal_py_host{ext_suffix}', f'_onedal_py_dpc{ext_suffix}']
+     if IS_WIN:
+         ext_suffix_lib = ext_suffix.replace('.dll', '.lib')
+-- 
+2.32.1 (Apple Git-133)
+
