@@ -10,8 +10,10 @@ source:
   sha256: a75acdc518f0af262a86952ee1040d5c8b9a9dbd4bf798fd974a917ee5b47e68
   patches:
     - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
-    # For patch 0002, see: https://github.com/python/cpython/issues/84006
-    - patches/0002-win-64-py37-distutils.patch  # [win and py==37]
+    # For patch 0002 and 0003, see: https://github.com/python/cpython/issues/84006
+    - patches/0002-win-64-py37-distutils.patch   # [win and py==37]
+    - patches/0003_unix_py_lt_39_distutils.patch # [unix and py<39]
+
 build:
   number: {{ buildnumber }}
   skip: True  # [not ((win or linux or osx) and x86_64)]
