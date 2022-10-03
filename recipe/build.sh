@@ -29,8 +29,4 @@ fi
 
 export DAAL4PY_VERSION=$PKG_VERSION
 export MPIROOT=${PREFIX}
-
 ${PYTHON} setup.py install $ARGS
-
-# Confirm that the _onedal_py_host .so file was generated.
-test -f onedal/_onedal_py_host*.so || "ERROR: Failed to generate onedal/_onedal_py_host*.so"

@@ -64,6 +64,11 @@ test:
     - daal4py
     - onedal
   commands:
+    # Confirm that the _onedal_py_host .so/.pyd file was generated
+    # This is especially needed by scikit-learn-intelex.
+    - test -f ./lib/python*/site-packages/onedal/_onedal_py_host*.so || "ERROR: _onedal_py_host*.so not found"              # [unix]
+    - if not exist .\lib\site-packages\onedal\_onedal_py_host*.pyd echo "ERROR: _onedal_py_host*.pyd not found" && exit \b  # [win]
+    # Upstream tests
     - cd tests
     - python -c "import daal4py"
     - mpirun -n 4 python -m unittest discover -v -p spmd*.py      # [not win]
