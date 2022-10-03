@@ -1,0 +1,24 @@
+From 579e5b8af3efbc739fcd2debb1321dec8933440f Mon Sep 17 00:00:00 2001
+From: Paul Yim <paul.j.yim@gmail.com>
+Date: Fri, 30 Sep 2022 16:48:10 -0400
+Subject: [PATCH] Set cmake arg for python executable
+
+---
+ scripts/build_backend.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scripts/build_backend.py b/scripts/build_backend.py
+index c1ce91f..5b0330d 100755
+--- a/scripts/build_backend.py
++++ b/scripts/build_backend.py
+@@ -133,6 +133,7 @@ def custom_build_cmake_clib(iface, cxx=None):
+         "-DPYTHON_INCLUDE_DIR=" + python_include,
+         "-DNUMPY_INCLUDE_DIRS=" + numpy_include,
+         "-DPYTHON_LIBRARY_DIR=" + python_library_dir,
++        "-DPYTHON_EXECUTABLE=" + os.environ['PYTHON'],
+         "-DoneDAL_INCLUDE_DIRS=" + jp(os.environ['DALROOT'], 'include'),
+         "-DoneDAL_LIBRARY_DIR=" + jp(os.environ['DALROOT'], 'lib', 'intel64'),
+         "-Dpybind11_DIR=" + pybind11.get_cmake_dir(),
+-- 
+2.32.1 (Apple Git-133)
+
