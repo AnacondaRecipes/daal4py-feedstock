@@ -9,15 +9,12 @@ source:
   url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
   sha256: e289f49b34f2df3a3c5650c38a0d3080062169a9ba6e4bdbd154a4f0b982800a
   patches:
-    # - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
     - patches/0004_set_cmake_python_executable.patch
 
 build:
   number: {{ buildnumber }}
   skip: True  # [not ((win or linux) and x86_64)]
   skip: True  # [py<38]
-  # missing_dso_whitelist:      # [osx]
-  #   - lib/libc++.1.dylib      # [osx]
 
 requirements:
   build:
