@@ -48,7 +48,7 @@ test:
     - xgboost       # [not win and py<=38]
     - lightgbm      # [linux]
     - pytest
-    - mpich         # [not win]
+    - mpich 3.3.2 hc856adb_0  # [linux]
   source_files:
     - examples
     - tests
