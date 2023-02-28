@@ -2,7 +2,13 @@
 
 # Confirm that the _onedal_py_host .so/.pyd file was generated
 # This is especially needed by scikit-learn-intelex.
-test -f ${PREFIX}/lib/python*/site-packages/onedal/_onedal_py_host*.so
+if [ `ls -1 ${PREFIX}/lib/python*/site-packages/onedal/_onedal_py_host*.so 2>/dev/null | wc -l ` -gt 0 ];
+then
+    echo "OK"
+else
+    echo "Error: Necessary .so files missing from built package."
+    exit 1
+fi
 
 # Upstream tests
 cd tests
