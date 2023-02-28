@@ -1,3 +1,20 @@
+#!/bin/bash
+
+# Confirm that the _onedal_py_host .so/.pyd file was generated
+# This is especially needed by scikit-learn-intelex.
+test -f ${PREFIX}/lib/python*/site-packages/onedal/_onedal_py_host*.so
+
+# Upstream tests
+cd tests
+${PYTHON} -c "import daal4py"
+mpirun -n 4 ${PYTHON} -m unittest discover -v -p spmd*.py
+${PYTHON} -m unittest discover -v -p 'test*[!ex].py'
+pytest --verbose --pyargs ../daal4py/sklearn/
+pytest --verbose --pyargs ../onedal/ --deselect="onedal/common/tests/test_policy.py" --deselect="onedal/svm/tests/test_svc.py::test_estimator"
+${PYTHON} ../examples/daal4py/run_examples.py
+${PYTHON} -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
+
+
 #*******************************************************************************
 # Copyright 2014-2020 Intel Corporation
 # All Rights Reserved.
@@ -15,8 +32,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #*******************************************************************************
-
-#!/bin/bash
 
 # if dpc++ vars path is specified
 if [ ! -z "${DPCPPROOT}" ]; then
