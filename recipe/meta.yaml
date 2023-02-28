@@ -1,5 +1,5 @@
-{% set version = "2021.6.0" %}
-{% set buildnumber = 1 %}
+{% set version = "2023.0.2" %}
+{% set buildnumber = 0 %}
 
 package:
   name: daal4py
@@ -7,23 +7,18 @@ package:
 
 source:
   url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
-  sha256: a75acdc518f0af262a86952ee1040d5c8b9a9dbd4bf798fd974a917ee5b47e68
+  sha256: e289f49b34f2df3a3c5650c38a0d3080062169a9ba6e4bdbd154a4f0b982800a
   patches:
-    - patches/0001-replace-check_estimator_sparse_data-in-tests.patch
-    # For patch 0002, see: https://github.com/python/cpython/issues/84006
-    - patches/0002-win-64-py37-distutils.patch  # [win and py==37]
     - patches/0004_set_cmake_python_executable.patch
 
 build:
   number: {{ buildnumber }}
-  skip: True  # [not ((win or linux or osx) and x86_64)]
-  skip: True  # [py<36]
-  missing_dso_whitelist:      # [osx]
-    - lib/libc++.1.dylib      # [osx]
+  skip: True  # [not ((win or linux) and x86_64)]
+  skip: True  # [py<38]
 
 requirements:
   build:
-    - make  # [linux or osx]
+    - make  # [linux]
     - {{ compiler('cxx') }}  # [not osx]
     - cmake
     - patch     # [unix]
@@ -34,9 +29,7 @@ requirements:
     - setuptools
     - wheel
     - numpy
-    - dal-devel ==2021.6.0=hdb19cb5_916  # [linux]
-    - dal-devel ==2021.6.0=haf03e11_929  # [osx]
-    - dal-devel ==2021.6.0=h59b6b97_874  # [win]
+    - dal-devel 2023.0.1
     - cython
     - jinja2
     - mpich      # [not win]
@@ -44,39 +37,23 @@ requirements:
     - pybind11
   run:
     - python
-    - dal ==2021.6.0=hdb19cb5_916  # [linux]
-    - dal ==2021.6.0=haf03e11_929  # [osx]
-    - dal ==2021.6.0=h59b6b97_874  # [win]
+    - dal 2023.0.1
     - {{ pin_compatible('numpy') }}
 
 test:
   requires:
     - pandas
     - scipy
-    - scikit-learn <1.1
+    - scikit-learn
     - xgboost       # [not win and py<=38]
     - lightgbm      # [linux]
     - pytest
-    - mpich         # [not win]
+    - mpich 3.3.2 hc856adb_0  # [linux]
   source_files:
     - examples
     - tests
     - daal4py
     - onedal
-  commands:
-    # Confirm that the _onedal_py_host .so/.pyd file was generated
-    # This is especially needed by scikit-learn-intelex.
-    - test -f ${PREFIX}/lib/python*/site-packages/onedal/_onedal_py_host*.so  # [unix]
-    - if not exist %PREFIX%\\Lib\\site-packages\\onedal\\_onedal_py_host*.pyd exit 1  # [win]
-    # Upstream tests
-    - cd tests
-    - python -c "import daal4py"
-    - mpirun -n 4 python -m unittest discover -v -p spmd*.py      # [not win]
-    - python -m unittest discover -v -p 'test*.py'
-    - pytest --pyargs ../daal4py/sklearn/
-    - pytest --pyargs ../onedal/
-    - python ../examples/daal4py/run_examples.py
-    - python -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
 
 about:
   home: https://intelpython.github.io/daal4py/
@@ -86,6 +63,15 @@ about:
     - LICENSE
     - doc/daal4py/third-party-programs.txt
   summary: A convenient Python API to Intel (R) oneAPI Data Analytics Library
+  description: |
+    <strong>LEGAL NOTICE: Use of this software package is subject to the
+    software license agreement (as set forth above, in the license section of
+    the installed Conda package and/or the README file) and all notices,
+    disclaimers or license terms for third party or open source software
+    included in or with the software.</strong>
+    <br/><br/>
+    EULA: <a href="https://opensource.org/licenses/Apache-2.0" target="_blank">Apache-2.0</a>
+    <br/><br/>
   dev_url: https://github.com/intel/scikit-learn-intelex
   doc_url: https://intelpython.github.io/daal4py
 
