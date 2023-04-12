@@ -41,7 +41,6 @@ requirements:
   run:
     - python
     - dal 2023.0.1
-    # https://github.com/scipy/scipy/blob/v1.10.0/setup.py#L452-L453
     - numpy >={{ numpy }},<1.27.0 
 
 test:
