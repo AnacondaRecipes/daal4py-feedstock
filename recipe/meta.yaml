@@ -1,7 +1,7 @@
 {% set version = "2023.1.1" %}
 {% set numpy = "1.19.5" %}  # [py<=39 and not (osx and arm64)]
 {% set numpy = "1.21" %}  # [py<=39 and (osx and arm64)]
-{% set numpy = "1.21" %}  # [py>39 and py<311]
+{% set numpy = "1.22" %}  # [py>39 and py<311]
 {% set numpy = "1.23" %}  # [py>=311]
 
 package:
