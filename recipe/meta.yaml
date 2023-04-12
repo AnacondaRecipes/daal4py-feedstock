@@ -1,4 +1,8 @@
 {% set version = "2023.1.1" %}
+{% set numpy = "1.19.5" %}  # [py<=39 and not (osx and arm64)]
+{% set numpy = "1.21" %}  # [py<=39 and (osx and arm64)]
+{% set numpy = "1.21" %}  # [py>39 and py<311]
+{% set numpy = "1.23" %}  # [py>=311]
 
 package:
   name: daal4py
@@ -29,7 +33,7 @@ requirements:
     - dal-devel 2023.0.1
     - jinja2
     - mpich      # [not win]
-    - numpy
+    - numpy {{ numpy }}
     - pip
     - pybind11
     - setuptools
@@ -37,7 +41,8 @@ requirements:
   run:
     - python
     - dal 2023.0.1
-    - {{ pin_compatible('numpy') }}
+    # https://github.com/scipy/scipy/blob/v1.10.0/setup.py#L452-L453
+    - numpy >={{ numpy }},<1.27.0 
 
 test:
   requires:
@@ -49,10 +54,10 @@ test:
     - pytest
     - mpich 3.3.2 hc856adb_0  # [linux]
   source_files:
-      - examples
-      - tests
-      - daal4py/sklearn
-      - onedal
+    - examples
+    - tests
+    - daal4py/sklearn
+    - onedal
 
 about:
   home: https://intelpython.github.io/daal4py/
