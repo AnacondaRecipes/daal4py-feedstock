@@ -60,7 +60,7 @@ test:
     - python -m unittest discover -v -p 'test*[!ex].py'
     - pytest --verbose --pyargs ../daal4py/sklearn/
     - pytest --verbose --pyargs ../onedal/ --deselect="onedal/common/tests/test_policy.py" --deselect="onedal/svm/tests/test_svc.py::test_estimator"
-    - python ../tests/run_examples.py
+    - python ../run_examples.py
     - python -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
 
 about:
