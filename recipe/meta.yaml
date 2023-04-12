@@ -24,16 +24,16 @@ requirements:
     - m2-patch  # [win]
   host:
     - python
-    - pip
-    - setuptools
-    - wheel
-    - numpy
+    - clang-tools
+    - cython 0.29.33
     - dal-devel 2023.0.1
-    - cython
     - jinja2
     - mpich      # [not win]
-    - clang-tools
+    - numpy
+    - pip
     - pybind11
+    - setuptools
+    - wheel
   run:
     - python
     - dal 2023.0.1
@@ -52,6 +52,7 @@ test:
       - examples
       - tests
       - daal4py/sklearn
+      - onedal
 
 about:
   home: https://intelpython.github.io/daal4py/
