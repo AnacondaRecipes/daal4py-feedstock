@@ -35,7 +35,7 @@ requirements:
     - cython 0.29.33
     - dal-devel {{ dal_version }}
     - jinja2
-    - mpich 3.3.2 hc856adb_0  # [not win]
+    - mpich 3.3.2  # [not win]
     - numpy {{ numpy }}
     - pip
     - pybind11
