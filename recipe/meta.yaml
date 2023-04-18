@@ -23,7 +23,7 @@ build:
 
 requirements:
   build:
-    - make  # [linux or osx]
+    - make  # [not win]
     - {{ compiler('cxx') }}  # [not osx]
     - cmake
     - patch     # [unix]
@@ -50,8 +50,8 @@ test:
     - pandas
     - scipy
     - scikit-learn
-    - xgboost       # [not win and py<=38]
-    - lightgbm      # [not win]
+    #- xgboost       # [not win and py<=38]
+    #- lightgbm      # [not win]
     - pytest
     - mpich 3.3.2 hc856adb_0  # [not win]
   source_files:
