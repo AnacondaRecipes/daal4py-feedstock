@@ -1,0 +1,4 @@
+
+# the conda-build parameters to use for disabling --error-overlinking on osx-64
+build_parameters:
+  - ""
