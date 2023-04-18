@@ -57,7 +57,6 @@ test:
   source_files:
     - examples
     - tests
-    - daal4py
     - daal4py/sklearn
     - onedal
 
