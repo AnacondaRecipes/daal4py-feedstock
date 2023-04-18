@@ -13,8 +13,6 @@ fi
 # Upstream tests
 ${PYTHON} -c "import daal4py"
 
-# Check mpirun path
-which mpirun
 # Run tests
 mpirun -n 4 ${PYTHON} -m unittest discover -v -p spmd*.py
 ${PYTHON} -m unittest discover -v -p 'test*[!ex].py'
