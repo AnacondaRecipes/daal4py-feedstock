@@ -1,6 +1,7 @@
 # The package daal4py depends on dal and dal-devel packages from the intel_repack-feedstock,
 # so be sure to update them before updating daal4py. 
 {% set version = "2023.1.1" %}
+{% set dal_version = "2023.1.1" %}
 {% set numpy = "1.19.5" %}  # [py<=39 and not (osx and arm64)]
 {% set numpy = "1.21" %}  # [py<=39 and (osx and arm64)]
 {% set numpy = "1.22" %}  # [py>39 and py<311]
@@ -32,9 +33,9 @@ requirements:
     - python
     - clang-tools
     - cython 0.29.33
-    - dal-devel 2023.1.1
+    - dal-devel {{ dal_version }}
     - jinja2
-    - mpich      # [not win]
+    - mpich 3.3.2 hc856adb_0  # [not win]
     - numpy {{ numpy }}
     - pip
     - pybind11
@@ -42,7 +43,7 @@ requirements:
     - wheel
   run:
     - python
-    - dal 2023.1.1
+    - dal {{ dal_version }}
     - {{ pin_compatible('numpy') }}
 
 test:
