@@ -1,3 +1,5 @@
+# The package daal4py depends on dal and dal-devel packages from the intel_repack-feedstock,
+# so be sure to update them before updating daal4py. 
 {% set version = "2023.1.1" %}
 {% set numpy = "1.19.5" %}  # [py<=39 and not (osx and arm64)]
 {% set numpy = "1.21" %}  # [py<=39 and (osx and arm64)]
