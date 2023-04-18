@@ -12,7 +12,11 @@ fi
 
 # Upstream tests
 ${PYTHON} -c "import daal4py"
-mpiexec -n 4 ${PYTHON} -m unittest discover -v -p spmd*.py
+
+# Check mpirun path
+which mpirun
+# Run tests
+mpirun -n 4 ${PYTHON} -m unittest discover -v -p spmd*.py
 ${PYTHON} -m unittest discover -v -p 'test*[!ex].py'
 pytest --verbose --pyargs daal4py/sklearn/
 #pytest --verbose --pyargs onedal/ --deselect="onedal/common/tests/test_policy.py" --deselect="onedal/svm/tests/test_svc.py::test_estimator"
