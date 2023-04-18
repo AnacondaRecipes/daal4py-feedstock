@@ -51,7 +51,7 @@ test:
     - scipy
     - scikit-learn
     #- xgboost       # [not win and py<=38]
-    #- lightgbm      # [not win]
+    - lightgbm      # [linux]
     - pytest
     - mpich 3.3.2 hc856adb_0  # [not win]
   source_files:
