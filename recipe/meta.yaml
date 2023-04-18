@@ -16,12 +16,12 @@ source:
 
 build:
   number: 0
-  skip: True  # [not ((win or linux) and x86_64)]
+  skip: True  # [not ((win or linux or osx) and x86_64)]
   skip: True  # [py<38]
 
 requirements:
   build:
-    - make  # [linux]
+    - make  # [linux or osx]
     - {{ compiler('cxx') }}  # [not osx]
     - cmake
     - patch     # [unix]
@@ -30,7 +30,7 @@ requirements:
     - python
     - clang-tools
     - cython 0.29.33
-    - dal-devel 2023.0.1
+    - dal-devel 2023.1.1
     - jinja2
     - mpich      # [not win]
     - numpy {{ numpy }}
@@ -40,7 +40,7 @@ requirements:
     - wheel
   run:
     - python
-    - dal 2023.0.1
+    - dal 2023.1.1
     - numpy >={{ numpy }},<1.27.0 
 
 test:
