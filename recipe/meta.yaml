@@ -51,8 +51,9 @@ test:
     - pandas
     - scipy
     - scikit-learn
-    #- xgboost       # [not win and py<=38]
-    #- lightgbm      # [linux]
+    #- xgboost      # [not win and py<=38]
+    - lightgbm      # [linux]
+    - mpich         # [not win]
     - pytest
   source_files:
     - examples
