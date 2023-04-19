@@ -31,7 +31,7 @@ requirements:
     - m2-patch  # [win]
   host:
     - python
-    - clang-tools
+    - clang-format
     - cython 0.29.33
     - dal-devel {{ dal_version }}
     - jinja2
@@ -58,7 +58,7 @@ test:
   source_files:
     - examples
     - tests
-    - daal4py/sklearn
+    - daal4py
     - onedal
 
 about:

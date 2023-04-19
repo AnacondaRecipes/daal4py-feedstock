@@ -12,6 +12,7 @@ else
 fi
 
 # Upstream tests
+cd tests
 ${PYTHON} -c "import daal4py"
 
 # Run tests
@@ -19,10 +20,10 @@ ${PYTHON} -c "import daal4py"
 # Check if this is fixed in the next release.
 # mpirun -n 4 ${PYTHON} -m unittest discover -v -p spmd*.py
 #${PYTHON} -m unittest discover -v -p 'test*[!ex].py'
-pytest --verbose --pyargs daal4py/sklearn/
-#pytest --verbose --pyargs onedal/ --deselect="onedal/common/tests/test_policy.py" --deselect="onedal/svm/tests/test_svc.py::test_estimator"
-${PYTHON} tests/run_examples.py
-${PYTHON} -m daal4py examples/daal4py/sycl/sklearn_sycl.py
+pytest --verbose --pyargs ../daal4py/sklearn
+pytest --verbose --pyargs ../onedal
+${PYTHON} run_examples.py
+${PYTHON} -m daal4py ../examples/daal4py/sycl/sklearn_sycl.
 
 #*******************************************************************************
 # Copyright 2014-2020 Intel Corporation
