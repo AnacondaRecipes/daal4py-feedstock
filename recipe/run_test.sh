@@ -23,7 +23,7 @@ ${PYTHON} -c "import daal4py"
 pytest --verbose --pyargs ../daal4py/sklearn
 pytest --verbose --pyargs ../onedal
 ${PYTHON} run_examples.py
-${PYTHON} -m daal4py ../examples/daal4py/sycl/sklearn_sycl.
+${PYTHON} -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
 
 #*******************************************************************************
 # Copyright 2014-2020 Intel Corporation
