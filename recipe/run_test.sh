@@ -16,10 +16,8 @@ cd tests
 ${PYTHON} -c "import daal4py"
 
 # Run tests
-# 2023/4/18: mpirun and unittest discover commands cause errors for v2023.1.1 for all tests that it runs.
-# Check if this is fixed in the next release.
-# mpirun -n 4 ${PYTHON} -m unittest discover -v -p spmd*.py
-#${PYTHON} -m unittest discover -v -p 'test*[!ex].py'
+mpirun -n 4 ${PYTHON} -m unittest discover -v -p spmd*.py
+${PYTHON} -m unittest discover -v -p 'test*[!ex].py'
 pytest --verbose --pyargs ../daal4py/sklearn
 pytest --verbose --pyargs ../onedal
 ${PYTHON} run_examples.py
