@@ -35,7 +35,7 @@ requirements:
     - cython 0.29.33
     - dal-devel {{ dal_version }}
     - jinja2
-    - mpich 3.3.2  # [not win]
+    - mpich 4.1.1  # [not win]
     - numpy {{ numpy }}
     - pip
     - pybind11
@@ -53,7 +53,7 @@ test:
     - scikit-learn
     #- xgboost      # [not win and py<=38]
     - lightgbm      # [linux]
-    - mpich         # [not win]
+    - mpich 4.1.1        # [not win]
     - pytest
   source_files:
     - examples
