@@ -34,7 +34,6 @@ requirements:
     - clang-format
     - cython 0.29.33
     - dal-devel {{ dal_version }}
-    - dal-include {{ dal_version }}
     - jinja2
     - mpich 4.1.1  # [not win]
     - numpy {{ numpy }}
@@ -49,6 +48,9 @@ requirements:
 
 test:
   requires:
+    # The dependant package scikit-learn-intelex requires library_version_info.h and should be in the services folder, 
+    # see https://github.com/intel/scikit-learn-intelex/blob/987b5102fba322d604f29a17db039301e6f8dfbc/scripts/version.py#L39
+    - dal-include {{ dal_version }}
     - pandas
     - scipy
     - scikit-learn
