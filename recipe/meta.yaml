@@ -31,7 +31,7 @@ requirements:
     - m2-patch  # [win]
   host:
     - python
-    - clang-format
+    - clang-format 14.0.6
     - cython 0.29.33
     - dal-devel {{ dal_version }}
     - jinja2
