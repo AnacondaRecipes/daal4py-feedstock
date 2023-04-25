@@ -1,4 +1,6 @@
 # the conda-build parameters to use for disabling --error-overlinking on osx-64
+# because of `libcxx` overlinking:
+# `lib/python3.11/site-packages/daal4py/_daal4py.cpython-311-darwin.so): .. but ['libcxx'] not in reqs/run`
 build_parameters:
   - ""
 
