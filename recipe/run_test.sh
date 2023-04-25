@@ -11,6 +11,11 @@ else
     exit 1
 fi
 
+# The downstream package scikit-learn-intelex v2023.1.1 requires the header `library_version_info.h`, 
+# see https://github.com/intel/scikit-learn-intelex/blob/4abff0df77475a7e7c3f3da135fdc9dc586f8f1e/scripts/version.py#L39
+# Make sure it is present.
+test -f $PREFIX/include/services/library_version_info.h
+
 # Upstream tests
 cd tests
 ${PYTHON} -c "import daal4py"

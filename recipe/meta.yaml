@@ -34,6 +34,7 @@ requirements:
     - clang-format
     - cython 0.29.33
     - dal-devel {{ dal_version }}
+    - dal-include {{ dal_version }}
     - jinja2
     - mpich 4.1.1  # [not win]
     - numpy {{ numpy }}
