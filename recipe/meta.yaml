@@ -26,7 +26,6 @@ requirements:
   build:
     - make  # [not win]
     - {{ compiler('cxx') }}  # [not osx]
-    - libcxx  # [osx]
     - cmake
     - patch     # [unix]
     - m2-patch  # [win]
@@ -45,6 +44,7 @@ requirements:
   run:
     - python
     - dal {{ dal_version }}
+    - libcxx  # [osx]
     - {{ pin_compatible('numpy') }}
 
 test:
