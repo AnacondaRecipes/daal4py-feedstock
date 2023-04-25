@@ -27,6 +27,7 @@ requirements:
     - make  # [not win]
     - {{ compiler('cxx') }}  # [not osx]
     - cmake
+    - libcxx
     - patch     # [unix]
     - m2-patch  # [win]
   host:
