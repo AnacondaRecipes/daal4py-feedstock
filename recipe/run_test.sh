@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -ex
 # Confirm that the _onedal_py_host .so/.pyd file was generated
 # This is especially needed by scikit-learn-intelex.
 if [ `ls -1 ${PREFIX}/lib/python*/site-packages/onedal/_onedal_py_host*.so 2>/dev/null | wc -l ` -gt 0 ];
@@ -10,16 +11,22 @@ else
     exit 1
 fi
 
+# The downstream package scikit-learn-intelex v2023.1.1 requires the header `library_version_info.h`, 
+# see https://github.com/intel/scikit-learn-intelex/blob/4abff0df77475a7e7c3f3da135fdc9dc586f8f1e/scripts/version.py#L39
+# Make sure it is present.
+test -f $PREFIX/include/services/library_version_info.h
+
 # Upstream tests
 cd tests
 ${PYTHON} -c "import daal4py"
+
+# Run tests
 mpirun -n 4 ${PYTHON} -m unittest discover -v -p spmd*.py
 ${PYTHON} -m unittest discover -v -p 'test*[!ex].py'
-pytest --verbose --pyargs ../daal4py/sklearn/
-pytest --verbose --pyargs ../onedal/ --deselect="onedal/common/tests/test_policy.py" --deselect="onedal/svm/tests/test_svc.py::test_estimator"
-${PYTHON} ../examples/daal4py/run_examples.py
+pytest --verbose --pyargs ../daal4py/sklearn
+pytest --verbose --pyargs ../onedal
+${PYTHON} run_examples.py
 ${PYTHON} -m daal4py ../examples/daal4py/sycl/sklearn_sycl.py
-
 
 #*******************************************************************************
 # Copyright 2014-2020 Intel Corporation

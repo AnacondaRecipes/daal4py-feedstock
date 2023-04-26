@@ -1,5 +1,11 @@
-{% set version = "2023.0.2" %}
-{% set buildnumber = 0 %}
+# The package daal4py depends on dal and dal-devel packages from the intel_repack-feedstock,
+# so be sure to update them before updating daal4py. 
+{% set version = "2023.1.1" %}
+{% set dal_version = "2023.1.1" %}
+{% set numpy = "1.19.5" %}  # [py<=39 and not (osx and arm64)]
+{% set numpy = "1.21" %}  # [py<=39 and (osx and arm64)]
+{% set numpy = "1.22" %}  # [py>39 and py<311]
+{% set numpy = "1.23" %}  # [py>=311]
 
 package:
   name: daal4py
@@ -7,48 +13,53 @@ package:
 
 source:
   url: https://github.com/intel/scikit-learn-intelex/archive/{{ version }}.tar.gz
-  sha256: e289f49b34f2df3a3c5650c38a0d3080062169a9ba6e4bdbd154a4f0b982800a
+  sha256: 451b8c5e6d3a0f4b147a68ffe37bbddf7fc2e706083ec3e57479ec4421a7d963
   patches:
     - patches/0004_set_cmake_python_executable.patch
 
 build:
-  number: {{ buildnumber }}
-  skip: True  # [not ((win or linux) and x86_64)]
+  number: 0
+  skip: True  # [not ((win or linux or osx) and x86_64)]
   skip: True  # [py<38]
 
 requirements:
   build:
-    - make  # [linux]
+    - make  # [not win]
     - {{ compiler('cxx') }}  # [not osx]
     - cmake
     - patch     # [unix]
     - m2-patch  # [win]
   host:
     - python
+    - clang-format 14.0.6
+    - cython 0.29.33
+    - dal-devel {{ dal_version }}
+    - jinja2
+    - mpich 4.1.1  # [not win]
+    - numpy {{ numpy }}
     - pip
+    - pybind11
     - setuptools
     - wheel
-    - numpy
-    - dal-devel 2023.0.1
-    - cython
-    - jinja2
-    - mpich      # [not win]
-    - clang-tools
-    - pybind11
   run:
     - python
-    - dal 2023.0.1
+    - dal {{ dal_version }}
+    - libcxx  # [osx]
     - {{ pin_compatible('numpy') }}
 
 test:
   requires:
-    - pandas
-    - scipy
-    - scikit-learn
-    - xgboost       # [not win and py<=38]
+    - catboost      # [py<=310]
+    # The dependant package scikit-learn-intelex requires library_version_info.h and should be in the services folder, 
+    # see https://github.com/intel/scikit-learn-intelex/blob/987b5102fba322d604f29a17db039301e6f8dfbc/scripts/version.py#L39
+    - dal-include {{ dal_version }}
     - lightgbm      # [linux]
+    - mpich 4.1.1   # [not win]
+    - pandas
     - pytest
-    - mpich 3.3.2 hc856adb_0  # [linux]
+    - scikit-learn
+    - scipy
+    - xgboost       # [not win and py<=38]
   source_files:
     - examples
     - tests
