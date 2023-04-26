@@ -49,16 +49,17 @@ requirements:
 
 test:
   requires:
+    - catboost      # [py<=310]
     # The dependant package scikit-learn-intelex requires library_version_info.h and should be in the services folder, 
     # see https://github.com/intel/scikit-learn-intelex/blob/987b5102fba322d604f29a17db039301e6f8dfbc/scripts/version.py#L39
     - dal-include {{ dal_version }}
-    - pandas
-    - scipy
-    - scikit-learn
-    #- xgboost      # [not win and py<=38]
     - lightgbm      # [linux]
-    - mpich 4.1.1        # [not win]
+    - mpich 4.1.1   # [not win]
+    - pandas
     - pytest
+    - scikit-learn
+    - scipy
+    - xgboost       # [not win and py<=38]
   source_files:
     - examples
     - tests
