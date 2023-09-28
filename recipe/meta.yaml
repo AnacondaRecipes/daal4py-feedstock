@@ -18,7 +18,7 @@ source:
     - patches/0004_set_cmake_python_executable.patch
 
 build:
-  number: 0
+  number: 1
   skip: True  # [not ((win or linux or osx) and x86_64)]
   skip: True  # [py<38]
 
@@ -32,7 +32,7 @@ requirements:
   host:
     - python
     - clang-format 14.0.6
-    - cython 0.29.33
+    - cython 0.29
     - dal-devel {{ dal_version }}
     - jinja2
     - mpich 4.1.1  # [not win]
